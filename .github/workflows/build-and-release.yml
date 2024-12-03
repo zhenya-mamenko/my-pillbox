@@ -36,7 +36,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: my-travel-pillbox.apk
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.RELEASE_TOKEN }}
           body: |
             This is a new release of the My Travel Pillbox app.
             It includes the latest features and bug fixes.
