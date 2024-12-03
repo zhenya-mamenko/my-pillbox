@@ -15,9 +15,9 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./src/assets/images/adaptive-icon.png"
       },
+      "package": "com.mamenko.mytravelpillbox",
       "permissions": [
         "android.permission.VIBRATE",
         "android.permission.RECORD_AUDIO"

@@ -11,8 +11,26 @@
     "preview": {
       "distribution": "internal"
     },
+    "publish": {
+      "autoIncrement": true,
+      "android": {
+        "buildType": "apk",
+        "image": "auto"
+      },
+      "env": {
+        "ENVIRONMENT": "production",
+        "PLATFORM": "android"
+      }
+  },
     "production": {
-      "autoIncrement": false
+      "autoIncrement": true,
+      "android": {
+        "image": "auto",
+        "env": {
+          "ENVIRONMENT": "production",
+          "PLATFORM": "android"
+        }
+      }
     }
   },
   "submit": {
