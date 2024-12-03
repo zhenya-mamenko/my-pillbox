@@ -104,29 +104,29 @@ const PillInfo: React.FC<PillInfoProps> = ({ imageSize, pill, onDelete, onEdit, 
   }
 
   const scale = useSharedValue(1);
-  const savedSized = useSharedValue(imageSize);
+  const savedSize = useSharedValue(imageSize);
   useEffect(() => {
-    savedSized.value = imageSize;
-  }, [imageSize]);
+    savedSize.value = imageSize;
+  }, [imageSize, savedSize]);
 
   const pinch = Gesture.Pinch()
     .onStart(() => {
       scale.value = 1;
     })
     .onUpdate((e) => {
-      scale.value = e.scale * savedSized.value >= 100 && e.scale * savedSized.value <= 320 ? e.scale : scale.value;
+      scale.value = e.scale * savedSize.value >= 100 && e.scale * savedSize.value <= 320 ? e.scale : scale.value;
     })
     .onEnd(() => {
-      savedSized.value = scale.value * savedSized.value;
+      savedSize.value = scale.value * savedSize.value;
       scale.value = 1;
-      runOnJS(onImageSizeChanged)(savedSized.value);
+      runOnJS(onImageSizeChanged)(savedSize.value);
     });
 
   const scaleAnimation = useAnimatedStyle(() => {
     return {
       ...styles.image,
-      width: scale.value * savedSized.value,
-      height: scale.value * savedSized.value,
+      width: scale.value * savedSize.value,
+      height: scale.value * savedSize.value,
     };
   });
 
@@ -134,8 +134,8 @@ const PillInfo: React.FC<PillInfoProps> = ({ imageSize, pill, onDelete, onEdit, 
     .maxDuration(250)
     .numberOfTaps(2)
     .onEnd(() => {
-      savedSized.value = 130;
-      runOnJS(onImageSizeChanged)(savedSized.value);
+      savedSize.value = 130;
+      runOnJS(onImageSizeChanged)(savedSize.value);
     });
 
   const composed = Gesture.Simultaneous(pinch, doubleTap);

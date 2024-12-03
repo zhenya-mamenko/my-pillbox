@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Alert, FlatList, StatusBar, StyleSheet, View } from 'react-native';
+import { FlatList, StatusBar, StyleSheet, View } from 'react-native';
 import Dialog from "react-native-dialog";
 import Storage from 'expo-sqlite/kv-store';
 import { FloatingAction } from 'react-native-floating-action';
@@ -10,7 +10,6 @@ import t from '@/helpers/localization'
 import PillDialog from '@/components/PillDialog';
 import PillInfo from '@/components/PillInfo';
 import useThemeColor from '@/hooks/useThemeColor';
-import useDynamicColorScheme from '@/hooks/useDynamicColorScheme';
 
 
 export default function Index() {
@@ -76,7 +75,7 @@ export default function Index() {
     >
       <StatusBar
         backgroundColor={ useThemeColor('primary') }
-        barStyle={`${useDynamicColorScheme() === 'dark' ? 'light' : 'dark'}-content`}
+        barStyle='light-content'
       />
       <FlatList style={styles.list}
         data={pills}
