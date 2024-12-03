@@ -1,9 +1,10 @@
 name: Build APK and Create GitHub Release
+
 on:
   push:
-    branches: [ main ]
-    paths:
-      - .github/workflows/build-and-release.yml
+    tags:
+      - 'v*'
+
 jobs:
   build:
     name: Install and build
@@ -20,18 +21,26 @@ jobs:
         with:
           node-version: 20.x
           cache: npm
-      - name: Setup Expo and EAS
-        uses: expo/expo-github-action@v8
-        with:
-          eas-version: latest
-          token: ${{ secrets.EXPO_TOKEN }}
       - name: Install dependencies
         run: npm ci
       - name: Prebuild
-        run: npx expo prebuild
+        run: npx expo prebuild --platform android
       - name: Install React Native cli
         run: npm i -D @react-native-community/cli
       - name: Build APK
         run: |
           cd android
-          ./gradlew app:assembleRelease
+          ./gradlew app:assembleRelease --no-daemon
+          cp app/build/outputs/apk/release/app-release.apk ../my-travel-pillbox.apk
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: my-travel-pillbox.apk
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            This is a new release of the My Travel Pillbox app.
+            It includes the latest features and bug fixes.
+            Download the APK and install it on your Android device.
+          draft: false
+          prerelease: false
+          make_latest: true
