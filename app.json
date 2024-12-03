@@ -15,7 +15,9 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/images/adaptive-icon.png"
+        "backgroundColor": "#94B9FF",
+        "foregroundImage": "./src/assets/images/ic_launcher.png",
+        "monochromeImage": "./src/assets/images/themed_icon.png"
       },
       "package": "com.mamenko.mytravelpillbox",
       "permissions": [
@@ -33,7 +35,7 @@
       [
         "expo-splash-screen",
         {
-          "image": "./src/assets/images/splash-icon.png",
+          "image": "./src/assets/images/splash_icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
