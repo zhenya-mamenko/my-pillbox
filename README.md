@@ -58,11 +58,11 @@ Ensure the following tools are installed:
    ```
 2. Install the dependencies:
   ```bash
-  npm install
+   npm install
   ```
 3. Start the application:
   ```bash
-  expo start
+   expo start
   ```
 4. Open the application on your mobile device by scanning the QR code provided by the Expo CLI using the Expo Go app.
 
