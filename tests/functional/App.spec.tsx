@@ -89,6 +89,10 @@ jest.mock('react-native-reanimated', () => {
 
 describe('App', () => {
 
+  beforeAll(() => {
+    jest.spyOn(Date.prototype, 'toLocaleDateString').mockImplementation(() => '2025-10-01');
+  });
+
   it('Should render', () => {
     render(<App />);
 

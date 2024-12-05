@@ -310,7 +310,7 @@ exports[`PillDialog Should render 1`] = `
           }
           testID="dialog-best-before"
         >
-          pill_best_before: 01.10.2025
+          pill_best_before: 2025-10-01
         </Text>
       </View>
     </View>

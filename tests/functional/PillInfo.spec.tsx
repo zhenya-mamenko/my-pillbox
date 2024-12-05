@@ -65,6 +65,10 @@ describe('PillInfo appearence', () => {
     imageData: 'iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII',
   }
 
+  beforeAll(() => {
+    jest.spyOn(Date.prototype, 'toLocaleDateString').mockImplementation(() => '2025-10-01');
+  });
+
   it('Should render', () => {
     render(
       <PillInfo
