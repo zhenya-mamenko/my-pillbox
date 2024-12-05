@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { FlatList, StatusBar, StyleSheet, View } from 'react-native';
 import Storage from 'expo-sqlite/kv-store';
 import { FloatingAction } from 'react-native-floating-action';
@@ -53,7 +53,6 @@ export default function Index() {
   const [imageSize, setImageSize] = useState(parseFloat(Storage.getItemSync('imageSize') || '130'));
   const [pill, setPill] = useState(emptyPill);
   const [pills, setPills] = useState<Pill[]>([]);
-  const [refreshing, setRefreshing] = useState(false);
   const [showAddPillButton, setShowAddPillButton] = useState(true);
   /* istanbul ignore next */
   let showModal: Function = () => {};
@@ -61,15 +60,15 @@ export default function Index() {
   let closeModal: Function = () => {};
 
   const loadPills = () => {
-    setRefreshing(true);
     const pills = db.getPills();
     setPills(pills);
-    setRefreshing(false);
   };
 
   useEffect(() => {
     Storage.setItem('imageSize', imageSize.toString());
   }, [imageSize]);
+
+  const listRef = useRef<FlatList<Pill>>(null);
 
   return (
     <View style={styles.container}
@@ -81,7 +80,7 @@ export default function Index() {
 
       <FlatList style={styles.list}
         data={pills}
-        refreshing={refreshing}
+        ref={listRef}
         renderItem={({ item }) => (
           <PillInfo
             imageSize={imageSize}
@@ -96,13 +95,20 @@ export default function Index() {
               showModal();
             }}
             onImageSizeChanged={/* istanbul ignore next */(newValue: number) => {
+              if (listRef?.current) {
+                listRef.current.setNativeProps({ scrollEnabled: true });
+              }
               if (imageSize !== newValue) {
                 setImageSize(newValue);
               }
             }}
+            onStartGesture={/* istanbul ignore next */() => {
+              if (listRef?.current) {
+                listRef.current.setNativeProps({ scrollEnabled: false });
+              }
+            }}
           />
         )}
-        onRefresh={loadPills}
       />
 
       <FloatingAction

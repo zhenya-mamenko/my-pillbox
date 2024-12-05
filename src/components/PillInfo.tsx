@@ -19,9 +19,10 @@ interface PillInfoProps extends ComponentProps<any> {
   onDelete: (pill: Pill) => void;
   onEdit: (pill: Pill) => void;
   onImageSizeChanged: (size: number) => void;
+  onStartGesture: () => void;
 }
 
-const PillInfo: React.FC<PillInfoProps> = ({ imageSize, pill, onDelete, onEdit, onImageSizeChanged, }) => {
+const PillInfo: React.FC<PillInfoProps> = ({ imageSize, pill, onDelete, onEdit, onImageSizeChanged, onStartGesture }) => {
 
   const styles = StyleSheet.create({
     container: {
@@ -119,6 +120,7 @@ const PillInfo: React.FC<PillInfoProps> = ({ imageSize, pill, onDelete, onEdit, 
   /* istanbul ignore next */
   const pinch = Gesture.Pinch()
     .onStart(() => {
+      runOnJS(onStartGesture)();
       scale.value = 1;
     })
     .onUpdate((e) => {
