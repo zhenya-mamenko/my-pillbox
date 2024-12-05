@@ -51,6 +51,7 @@ describe('PillInfo actions', () => {
         onDelete={() => {}}
         onEdit={onEdit}
         onImageSizeChanged={() => {}}
+        onStartGesture={() => {}}
       />);
     await waitFor(async () => {
       expect(await screen.getByTestId('pill-name-1')).toBeTruthy();
@@ -70,6 +71,7 @@ describe('PillInfo actions', () => {
         onDelete={onDelete}
         onEdit={() => {}}
         onImageSizeChanged={() => {}}
+        onStartGesture={() => {}}
       />);
     await waitFor(async () => {
       expect(await screen.getByTestId('pill-name-1')).toBeTruthy();
@@ -89,6 +91,7 @@ describe('PillInfo actions', () => {
         onDelete={() => {}}
         onEdit={() => {}}
         onImageSizeChanged={onImageSizeChanged}
+        onStartGesture={() => {}}
       />);
 
     await waitFor(() => {

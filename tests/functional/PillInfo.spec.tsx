@@ -77,6 +77,7 @@ describe('PillInfo appearence', () => {
         onDelete={() => {}}
         onEdit={() => {}}
         onImageSizeChanged={() => {}}
+        onStartGesture={() => {}}
       />
     );
     expect(screen.toJSON()).toMatchSnapshot();
@@ -90,6 +91,7 @@ describe('PillInfo appearence', () => {
         onDelete={() => {}}
         onEdit={() => {}}
         onImageSizeChanged={() => {}}
+        onStartGesture={() => {}}
       />
     );
     expect(screen.getByTestId('pill-name-1')).toHaveTextContent(pill.name);

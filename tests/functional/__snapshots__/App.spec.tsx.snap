@@ -28,17 +28,9 @@ exports[`App Should render 1`] = `
     onLayout={[Function]}
     onMomentumScrollBegin={[Function]}
     onMomentumScrollEnd={[Function]}
-    onRefresh={[Function]}
     onScroll={[Function]}
     onScrollBeginDrag={[Function]}
     onScrollEndDrag={[Function]}
-    refreshControl={
-      <RefreshControlMock
-        onRefresh={[Function]}
-        refreshing={false}
-      />
-    }
-    refreshing={false}
     removeClippedSubviews={false}
     renderItem={[Function]}
     scrollEventThrottle={0.0001}
@@ -53,7 +45,6 @@ exports[`App Should render 1`] = `
     }
     viewabilityConfigCallbackPairs={[]}
   >
-    <RCTRefreshControl />
     <View>
       <View
         onFocusCapture={[Function]}
