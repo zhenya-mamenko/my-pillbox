@@ -19,6 +19,8 @@ The application is designed specifically for travelers who may not have access t
 
 Below are sample screenshots of the application to demonstrate its features:
 
+![image](https://github.com/user-attachments/assets/a7ec9390-9ff6-4b47-b799-4d9a52d9b904) ![image](https://github.com/user-attachments/assets/c2b888ed-a033-4712-99e5-9334ebf7ac14)
+
 ## System Requirements
 
 The application has minimal requirements. Your device must meet the following criteria:
