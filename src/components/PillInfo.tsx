@@ -15,14 +15,14 @@ configureReanimatedLogger({ strict: false});
 
 interface PillInfoProps extends ComponentProps<any> {
   imageSize: number;
+  listRef: any;
   pill: Pill;
   onDelete: (pill: Pill) => void;
   onEdit: (pill: Pill) => void;
   onImageSizeChanged: (size: number) => void;
-  onStartGesture: () => void;
 }
 
-const PillInfo: React.FC<PillInfoProps> = ({ imageSize, pill, onDelete, onEdit, onImageSizeChanged, onStartGesture }) => {
+const PillInfo: React.FC<PillInfoProps> = ({ imageSize, listRef, pill, onDelete, onEdit, onImageSizeChanged, }) => {
 
   const styles = StyleSheet.create({
     container: {
@@ -119,8 +119,8 @@ const PillInfo: React.FC<PillInfoProps> = ({ imageSize, pill, onDelete, onEdit, 
 
   /* istanbul ignore next */
   const pinch = Gesture.Pinch()
+    .blocksExternalGesture(listRef)
     .onStart(() => {
-      runOnJS(onStartGesture)();
       scale.value = 1;
     })
     .onUpdate((e) => {

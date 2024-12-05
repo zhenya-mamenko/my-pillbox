@@ -73,11 +73,11 @@ describe('PillInfo appearence', () => {
     render(
       <PillInfo
         imageSize={100}
+        listRef={null}
         pill={pill}
         onDelete={() => {}}
         onEdit={() => {}}
         onImageSizeChanged={() => {}}
-        onStartGesture={() => {}}
       />
     );
     expect(screen.toJSON()).toMatchSnapshot();
@@ -87,11 +87,11 @@ describe('PillInfo appearence', () => {
     render(
       <PillInfo
         imageSize={100}
+        listRef={null}
         pill={pill}
         onDelete={() => {}}
         onEdit={() => {}}
         onImageSizeChanged={() => {}}
-        onStartGesture={() => {}}
       />
     );
     expect(screen.getByTestId('pill-name-1')).toHaveTextContent(pill.name);

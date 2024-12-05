@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
-import { FlatList, StatusBar, StyleSheet, View } from 'react-native';
+import { StatusBar, StyleSheet, View } from 'react-native';
 import Storage from 'expo-sqlite/kv-store';
+import { FlatList, GestureHandlerRootView, } from 'react-native-gesture-handler';
 import { FloatingAction } from 'react-native-floating-action';
 
 import * as db from '@/helpers/sqlite';
@@ -70,85 +71,88 @@ export default function Index() {
 
   const listRef = useRef<FlatList<Pill>>(null);
 
+  const pillOnDelete = /* istanbul ignore next */(pill: Pill) => {
+    setPill(pill);
+    setShowDialog(true);
+  }
+
+  const pillOnEdit = /* istanbul ignore next */(pill: Pill) => {
+    setPill(pill);
+    setShowAddPillButton(false);
+    showModal();
+  }
+
+  const pillOnImageSizeChanged = /* istanbul ignore next */(newValue: number) => {
+    if (imageSize !== newValue) {
+      setImageSize(newValue);
+    }
+  }
+
   return (
-    <View style={styles.container}
-    >
-      <StatusBar
-        backgroundColor={ useThemeColor('primary') }
-        barStyle='light-content'
-      />
+    <GestureHandlerRootView>
+      <View style={styles.container}
+      >
+        <StatusBar
+          backgroundColor={ useThemeColor('primary') }
+          barStyle='light-content'
+        />
 
-      <FlatList style={styles.list}
-        data={pills}
-        ref={listRef}
-        renderItem={({ item }) => (
-          <PillInfo
-            imageSize={imageSize}
-            pill={item}
-            onDelete={/* istanbul ignore next */(pill) => {
-              setPill(pill);
-              setShowDialog(true);
-            }}
-            onEdit={/* istanbul ignore next */(pill) => {
-              setPill(pill);
-              setShowAddPillButton(false);
-              showModal();
-            }}
-            onImageSizeChanged={/* istanbul ignore next */(newValue: number) => {
-              if (listRef?.current) {
-                listRef.current.setNativeProps({ scrollEnabled: true });
-              }
-              if (imageSize !== newValue) {
-                setImageSize(newValue);
-              }
-            }}
-            onStartGesture={/* istanbul ignore next */() => {
-              if (listRef?.current) {
-                listRef.current.setNativeProps({ scrollEnabled: false });
-              }
-            }}
-          />
-        )}
-      />
+        <FlatList
+          data={pills}
+          ref={listRef}
+          renderItem={({ item }) => (
+            <PillInfo
+              imageSize={imageSize}
+              listRef={listRef}
+              pill={item}
+              onDelete={pillOnDelete}
+              onEdit={pillOnEdit}
+              onImageSizeChanged={pillOnImageSizeChanged}
+            />
+          )}
+          style={styles.list}
+        />
 
-      <FloatingAction
-        actions={[
-          {
-            icon: require('../assets/images/add.png'),
-            name: 'add',
-          },
-        ]}
-        color={useThemeColor('primary') as string}
-        visible={showAddPillButton}
-        overrideWithAction={true}
-        onPressItem={/* istanbul ignore next */(name) => {
-          setPill(emptyPill);
-          setShowAddPillButton(false);
-          showModal();
-        }}
-      />
+        <FloatingAction
+          actions={[
+            {
+              icon: require('../assets/images/add.png'),
+              name: 'add',
+            },
+          ]}
+          color={useThemeColor('primary') as string}
+          visible={showAddPillButton}
+          overrideWithAction={true}
+          onPressItem={/* istanbul ignore next */(name) => {
+            setPill(emptyPill);
+            setShowAddPillButton(false);
+            showModal();
+          }}
+        />
 
-      <PillDialog
-        pill={pill}
-        provideActions={/* istanbul ignore next */([show, close]) => {
-          showModal = show;
-          closeModal = close;
-        }}
-        onClose={/* istanbul ignore next */() => {
-          closeModal();
-          loadPills();
-          setShowAddPillButton(true);
-        }}
-      />
-      <DeleteConfirmationDialog
-        showDialog={showDialog}
-        onClose={/* istanbul ignore next */() => setShowDialog(false)}
-        onDelete={/* istanbul ignore next */() => {
-          setShowDialog(false);
-          db.deletePill(pill.id as number);
-          loadPills();
-        }}
-      />
-    </View>
+        <PillDialog
+          pill={pill}
+          provideActions={/* istanbul ignore next */([show, close]) => {
+            showModal = show;
+            closeModal = close;
+          }}
+          onClose={/* istanbul ignore next */() => {
+            closeModal();
+            loadPills();
+            setShowAddPillButton(true);
+          }}
+        />
+
+        <DeleteConfirmationDialog
+          showDialog={showDialog}
+          onClose={/* istanbul ignore next */() => setShowDialog(false)}
+          onDelete={/* istanbul ignore next */() => {
+            setShowDialog(false);
+            db.deletePill(pill.id as number);
+            loadPills();
+          }}
+        />
+      </View>
+    </GestureHandlerRootView>
   );
 }

@@ -1,5 +1,6 @@
 import '@testing-library/react-native/extend-expect';
-import { userEvent, render, screen, waitFor } from '@testing-library/react-native';
+import { createRef } from 'react';
+import { render, screen, userEvent, waitFor } from '@testing-library/react-native';
 import { getByGestureTestId, fireGestureHandler } from 'react-native-gesture-handler/jest-utils';
 import PillInfo from '@/components/PillInfo';
 
@@ -44,15 +45,17 @@ describe('PillInfo actions', () => {
 
   it('Should call onEdit', async () => {
     const onEdit = jest.fn();
+    const ref = createRef();
     render(
       <PillInfo
         imageSize={100}
+        listRef={ref}
         pill={pill}
         onDelete={() => {}}
         onEdit={onEdit}
         onImageSizeChanged={() => {}}
-        onStartGesture={() => {}}
-      />);
+      />
+    );
     await waitFor(async () => {
       expect(await screen.getByTestId('pill-name-1')).toBeTruthy();
     });
@@ -64,14 +67,15 @@ describe('PillInfo actions', () => {
 
   it('Should call onDelete', async () => {
     const onDelete = jest.fn();
+    const ref = createRef();
     render(
       <PillInfo
         imageSize={100}
+        listRef={ref}
         pill={pill}
         onDelete={onDelete}
         onEdit={() => {}}
         onImageSizeChanged={() => {}}
-        onStartGesture={() => {}}
       />);
     await waitFor(async () => {
       expect(await screen.getByTestId('pill-name-1')).toBeTruthy();
@@ -84,14 +88,15 @@ describe('PillInfo actions', () => {
 
   it('Should call onImageSizeChanged', async () => {
     const onImageSizeChanged = jest.fn();
+    const ref = createRef();
     render(
       <PillInfo
         imageSize={100}
+        listRef={ref}
         pill={pill}
         onDelete={() => {}}
         onEdit={() => {}}
         onImageSizeChanged={onImageSizeChanged}
-        onStartGesture={() => {}}
       />);
 
     await waitFor(() => {
