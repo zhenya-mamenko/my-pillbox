@@ -7,10 +7,11 @@ import useThemeColor from '@/hooks/useThemeColor';
 
 interface Props extends ComponentProps<any> {
   icon: any;
+  testID?: string;
   onPress: () => void;
 }
 
-export default function CircleButton({ icon, onPress }: Props) {
+export default function ServiceButton({ icon, testID, onPress }: Props) {
 
   const styles = StyleSheet.create({
     circleButtonContainer: {
@@ -32,8 +33,14 @@ export default function CircleButton({ icon, onPress }: Props) {
   });
 
   return (
-    <View style={styles.circleButtonContainer}>
-      <Pressable style={styles.circleButton} onPress={onPress}>
+    <View
+      style={styles.circleButtonContainer}
+    >
+      <Pressable
+        style={styles.circleButton}
+        testID={testID ?? `serviceButton-${icon}`}
+        onPress={onPress}
+      >
         <MaterialIcons
           color={ useThemeColor('secondary') }
           name={icon}

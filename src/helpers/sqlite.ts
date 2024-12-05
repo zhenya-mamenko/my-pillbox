@@ -1,10 +1,10 @@
-import * as SQLite from 'expo-sqlite';
-import { type Pill } from './types';
+import { openDatabaseSync, type SQLiteDatabase, } from 'expo-sqlite';
+import { type Pill } from '../types';
 
-let db: SQLite.SQLiteDatabase;
+let db: SQLiteDatabase;
 
 export function createDatabase() {
-  db = SQLite.openDatabaseSync('pillbox.db');
+  db = openDatabaseSync('pillbox.db');
   db.execSync(`
     CREATE TABLE IF NOT EXISTS pills (
       id INTEGER PRIMARY KEY AUTOINCREMENT,

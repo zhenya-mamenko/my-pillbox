@@ -4,10 +4,9 @@ import { Image } from 'expo-image';
 import { GestureHandlerRootView, Gesture, GestureDetector, } from 'react-native-gesture-handler';
 import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 import Reanimated, { configureReanimatedLogger, runOnJS, SharedValue, useAnimatedStyle, useSharedValue, } from 'react-native-reanimated';
-import * as Haptics from 'expo-haptics';
 
 import t from '@/helpers/localization';
-import { Pill } from '@/helpers/types';
+import { Pill } from '@/types';
 import ServiceButton from './ServiceButton';
 import useThemeColor from '@/hooks/useThemeColor';
 
@@ -96,8 +95,16 @@ const PillInfo: React.FC<PillInfoProps> = ({ imageSize, pill, onDelete, onEdit, 
     return (
       <Reanimated.View style={styleAnimation}>
         <View style={styles.rightAction}>
-          <ServiceButton icon="edit" onPress={() => { swipeableMethods.close(); onEdit(pill); }} />
-          <ServiceButton icon="delete" onPress={() => { swipeableMethods.close(); onDelete(pill); }} />
+          <ServiceButton
+            icon="edit"
+            testID={`button-edit-${pill.id}`}
+            onPress={() => { swipeableMethods.close(); onEdit(pill); }}
+          />
+          <ServiceButton
+            icon="delete"
+            testID={`button-delete-${pill.id}`}
+            onPress={() => { swipeableMethods.close(); onDelete(pill); }}
+          />
         </View>
       </Reanimated.View>
     );
@@ -109,6 +116,7 @@ const PillInfo: React.FC<PillInfoProps> = ({ imageSize, pill, onDelete, onEdit, 
     savedSize.value = imageSize;
   }, [imageSize, savedSize]);
 
+  /* istanbul ignore next */
   const pinch = Gesture.Pinch()
     .onStart(() => {
       scale.value = 1;
@@ -120,7 +128,8 @@ const PillInfo: React.FC<PillInfoProps> = ({ imageSize, pill, onDelete, onEdit, 
       savedSize.value = scale.value * savedSize.value;
       scale.value = 1;
       runOnJS(onImageSizeChanged)(savedSize.value);
-    });
+    })
+    .withTestId(`pill-image-pinch-${pill.id}`);
 
   const scaleAnimation = useAnimatedStyle(() => {
     return {
@@ -136,9 +145,15 @@ const PillInfo: React.FC<PillInfoProps> = ({ imageSize, pill, onDelete, onEdit, 
     .onEnd(() => {
       savedSize.value = 130;
       runOnJS(onImageSizeChanged)(savedSize.value);
-    });
+    })
+    .withTestId(`pill-image-double-tap-${pill.id}`);
 
   const composed = Gesture.Simultaneous(pinch, doubleTap);
+
+  /* istanbul ignore next */
+  const flexDirection = imageSize < 210 ? 'row' : 'column';
+  /* istanbul ignore next */
+  const marginTop = imageSize < 210 ? 0 : 20;
 
   return (
     <GestureHandlerRootView>
@@ -146,11 +161,10 @@ const PillInfo: React.FC<PillInfoProps> = ({ imageSize, pill, onDelete, onEdit, 
         friction={2}
         rightThreshold={40}
         renderRightActions={RightAction}
-        onSwipeableOpen={async () => await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)}
       >
         <View
           style={
-            {...styles.container, ...(imageSize < 210 ? {flexDirection: 'row'} : {flexDirection: 'column'})}
+            { ...styles.container, flexDirection, }
           }
         >
           <GestureDetector gesture={composed}>
@@ -158,18 +172,25 @@ const PillInfo: React.FC<PillInfoProps> = ({ imageSize, pill, onDelete, onEdit, 
               <Image
                 source={{ uri: `data:image/jpg;base64,${imageData}` }}
                 style={ styles.image }
+                testID={`pill-image-${pill.id}`}
               />
             </Reanimated.View>
           </GestureDetector>
           <View style={
-            {...styles.textContainer, ...(imageSize < 210 ? {marginTop: 0,} : {marginTop: 20,}) }
+            { ...styles.textContainer, marginTop, }
           }>
             <View style={styles.linesContainer}>
-              <Text style={styles.title}>{name}</Text>
+              <Text
+                style={styles.title}
+                testID={`pill-name-${pill.id}`}
+              >
+                {name}
+              </Text>
               <Text
                 ellipsizeMode='tail'
                 numberOfLines={Math.round(imageSize / 25)}
                 style={styles.description}
+                testID={`pill-description-${pill.id}`}
               >
                 {
                   description
@@ -177,7 +198,10 @@ const PillInfo: React.FC<PillInfoProps> = ({ imageSize, pill, onDelete, onEdit, 
               </Text>
             </View>
             <View>
-              <Text style={styles.bestBefore}>
+              <Text
+                style={styles.bestBefore}
+                testID={`pill-best-before-${pill.id}`}
+              >
                 {bestBefore &&
                   `${t('pill_best_before')}: ${(new Date(bestBefore)).toLocaleDateString()}`
                 }

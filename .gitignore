@@ -33,3 +33,4 @@ yarn-error.*
 *.tsbuildinfo
 
 /android/
+__reports__/

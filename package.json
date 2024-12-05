@@ -8,11 +8,17 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "test": "jest --watchAll",
+    "test": "jest --coverage",
     "lint": "expo lint"
   },
   "jest": {
-    "preset": "jest-expo"
+    "coverageDirectory": "./__reports__/coverage",
+    "coverageReporters": ["clover", "json", "lcov", ["text", {"skipFull": true}]],
+    "preset": "jest-expo",
+    "setupFiles": [
+      "./node_modules/react-native-gesture-handler/jestSetup.js",
+      "./tests/jestSetup.js"
+    ]
   },
   "dependencies": {
     "@birdwingo/react-native-swipe-modal": "^1.2.3",
@@ -20,7 +26,6 @@
     "@react-native-community/datetimepicker": "8.2.0",
     "@react-navigation/bottom-tabs": "^7.0.0",
     "@react-navigation/native": "^7.0.0",
-    "@shopify/flash-list": "1.7.1",
     "expo": "~52.0.14",
     "expo-blur": "~14.0.1",
     "expo-constants": "~17.0.3",

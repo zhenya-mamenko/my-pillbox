@@ -8,7 +8,7 @@ import SwipeModal, { SwipeModalPublicMethods } from '@birdwingo/react-native-swi
 
 import * as db from '@/helpers/sqlite';
 import t from '@/helpers/localization';
-import { Pill } from '@/helpers/types';
+import { Pill } from '@/types';
 import useThemeColor from '@/hooks/useThemeColor';
 
 
@@ -81,7 +81,9 @@ export default function PillDialog({ pill, onClose, provideActions }: Props) {
 
   const modalRef = useRef<SwipeModalPublicMethods>(null);
 
+  /* istanbul ignore next */
   const showModal = () => modalRef.current?.show();
+  /* istanbul ignore next */
   const hideModal = () => modalRef.current?.hide();
   provideActions([showModal, hideModal]);
 
@@ -97,6 +99,7 @@ export default function PillDialog({ pill, onClose, provideActions }: Props) {
     setDateBestBefore(new Date(pill.bestBefore));
   }, [pill]);
 
+  /* istanbul ignore next */
   const pickImage = async () => {
     let result = await launchCameraAsync({
       allowsEditing: true,
@@ -117,6 +120,7 @@ export default function PillDialog({ pill, onClose, provideActions }: Props) {
 
   const textDimColor = useThemeColor('textDim');
   const textColor = useThemeColor('text');
+  /* istanbul ignore next */
   const openDatePicker = () => {
     const params: AndroidNativeProps = {
       display: 'spinner',
@@ -166,42 +170,59 @@ export default function PillDialog({ pill, onClose, provideActions }: Props) {
     >
       <View style={styles.modalContent}>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>
+          <Text
+            style={styles.title}
+            testID='dialog-title'
+          >
             { (pill.id && pill.id !== 0) ? t('pill_edit') : t('pill_add') }
           </Text>
           <Button
             disabled={!image || !name}
             color={useThemeColor('primary')}
+            testID='dialog-save-button'
             title={`    ${t('save')}    `}
             onPress={SavePill}
           />
         </View>
-        <Pressable onPress={pickImage} style={styles.photoImage}>
+        <Pressable
+          style={styles.photoImage}
+          testID='dialog-image-button'
+          onPress={pickImage}
+        >
           <Image
             contentFit="contain"
             placeholder={require("../assets/images/stub.png")}
             source={{ uri: !image ? null : `data:image/jpg;base64,${image}` }}
             style={{ height: '100%', width: '100%' }}
+            testID='dialog-image'
           />
         </Pressable>
         <View style={styles.inputsContainer}>
-          <TextInput style={styles.input}
+          <TextInput
             defaultValue={name}
             onChangeText={newName => setName(newName)}
             placeholder={ t('pill_name') }
             placeholderTextColor={ useThemeColor('textDim') }
+            style={styles.input}
+            testID='dialog-name-input'
           />
-          <TextInput style={{ ...styles.input, height: '40%', }}
+          <TextInput
             defaultValue={description}
             multiline={true}
             onChangeText={newDescription => setDescription(newDescription)}
             placeholder={ t('pill_description') }
             placeholderTextColor={ useThemeColor('textDim') }
+            style={{ ...styles.input, height: '40%', }}
+            testID='dialog-description-input'
           />
           <Pressable
             style={{ padding: 0, width: '100%', }}
+            testID='dialog-best-before-input'
             onPress={openDatePicker}>
-            <Text style={{ ...styles.input, height: 45, paddingVertical: 10, marginHorizontal: 0, }}>
+            <Text
+              style={{ ...styles.input, height: 45, paddingVertical: 10, marginHorizontal: 0, }}
+              testID='dialog-best-before'
+              >
               {`${t('pill_best_before')}: ${dateBestBefore.toLocaleDateString()}`}
             </Text>
           </Pressable>

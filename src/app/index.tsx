@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react';
 import { FlatList, StatusBar, StyleSheet, View } from 'react-native';
-import Dialog from "react-native-dialog";
 import Storage from 'expo-sqlite/kv-store';
 import { FloatingAction } from 'react-native-floating-action';
 
 import * as db from '@/helpers/sqlite';
-import { type Pill } from '@/helpers/types';
-import t from '@/helpers/localization'
+import { type Pill } from '@/types';
 import PillDialog from '@/components/PillDialog';
+import DeleteConfirmationDialog from '@/components/DeleteConfirmationDialog';
 import PillInfo from '@/components/PillInfo';
 import useThemeColor from '@/hooks/useThemeColor';
 
@@ -56,7 +55,9 @@ export default function Index() {
   const [pills, setPills] = useState<Pill[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [showAddPillButton, setShowAddPillButton] = useState(true);
+  /* istanbul ignore next */
   let showModal: Function = () => {};
+  /* istanbul ignore next */
   let closeModal: Function = () => {};
 
   const loadPills = () => {
@@ -77,6 +78,7 @@ export default function Index() {
         backgroundColor={ useThemeColor('primary') }
         barStyle='light-content'
       />
+
       <FlatList style={styles.list}
         data={pills}
         refreshing={refreshing}
@@ -84,16 +86,16 @@ export default function Index() {
           <PillInfo
             imageSize={imageSize}
             pill={item}
-            onDelete={(pill) => {
+            onDelete={/* istanbul ignore next */(pill) => {
               setPill(pill);
               setShowDialog(true);
             }}
-            onEdit={(pill) => {
+            onEdit={/* istanbul ignore next */(pill) => {
               setPill(pill);
               setShowAddPillButton(false);
               showModal();
             }}
-            onImageSizeChanged={(newValue: number) => {
+            onImageSizeChanged={/* istanbul ignore next */(newValue: number) => {
               if (imageSize !== newValue) {
                 setImageSize(newValue);
               }
@@ -113,7 +115,7 @@ export default function Index() {
         color={useThemeColor('primary') as string}
         visible={showAddPillButton}
         overrideWithAction={true}
-        onPressItem={name => {
+        onPressItem={/* istanbul ignore next */(name) => {
           setPill(emptyPill);
           setShowAddPillButton(false);
           showModal();
@@ -122,47 +124,25 @@ export default function Index() {
 
       <PillDialog
         pill={pill}
-        provideActions={([show, close]) => {
+        provideActions={/* istanbul ignore next */([show, close]) => {
           showModal = show;
           closeModal = close;
         }}
-        onClose={() => {
+        onClose={/* istanbul ignore next */() => {
           closeModal();
           loadPills();
           setShowAddPillButton(true);
         }}
       />
-
-      <View style={styles.deleteDialog}>
-        <Dialog.Container
-          headerStyle={styles.deleteDialogContent}
-          contentStyle={styles.deleteDialogContent}
-          footerStyle={styles.deleteDialogContent}
-          visible={showDialog}
-          onBackdropPress={() => setShowDialog(false)}
-        >
-          <Dialog.Title>{ t('delete_confirmation_header') }</Dialog.Title>
-          <Dialog.Description>
-            { t('delete_confirmation_description') }
-          </Dialog.Description>
-          <Dialog.Button
-            color={useThemeColor('primary')}
-            label={ t('cancel') }
-            onPress={() => setShowDialog(false)}
-          />
-          <Dialog.Button
-            bold={true}
-            color={useThemeColor('primary')}
-            label={ t('delete') }
-            onPress={() => {
-              setShowDialog(false);
-              db.deletePill(pill.id as number);
-              loadPills();
-            }}
-          />
-        </Dialog.Container>
-        </View>
-
+      <DeleteConfirmationDialog
+        showDialog={showDialog}
+        onClose={/* istanbul ignore next */() => setShowDialog(false)}
+        onDelete={/* istanbul ignore next */() => {
+          setShowDialog(false);
+          db.deletePill(pill.id as number);
+          loadPills();
+        }}
+      />
     </View>
   );
 }
