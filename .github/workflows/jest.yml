@@ -6,6 +6,8 @@ on:
       - src/**
       - tests/**
       - .github/workflows/jest.yml
+      - package.json
+      - package-lock.json
   pull_request:
     branches: [ main ]
     paths:
