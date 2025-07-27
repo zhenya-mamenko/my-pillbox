@@ -3,7 +3,7 @@
     "name": "My Travel Pillbox",
     "description": "An app to help you remember what pills you have in the pillbox",
     "slug": "my-pillbox",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "githubUrl": "https://github.com/zhenya-mamenko/my-pillbox",
     "orientation": "portrait",
     "icon": "./src/assets/images/icon.png",
