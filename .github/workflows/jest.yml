@@ -13,6 +13,9 @@ on:
     paths:
       - src/**
       - tests/**
+
+  workflow_call:
+
 jobs:
   test:
     timeout-minutes: 60
