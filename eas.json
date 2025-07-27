@@ -21,7 +21,7 @@
         "ENVIRONMENT": "production",
         "PLATFORM": "android"
       }
-  },
+    },
     "production": {
       "autoIncrement": true,
       "android": {

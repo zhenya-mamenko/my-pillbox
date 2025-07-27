@@ -53,8 +53,8 @@ Ensure the following tools are installed:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/my-travel-pillbox.git
-   cd my-travel-pillbox
+   git clone https://github.com/zhenya-mamenko/my-pillbox.git
+   cd my-pillbox
    ```
 2. Install the dependencies:
   ```bash

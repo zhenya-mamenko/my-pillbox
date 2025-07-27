@@ -34,3 +34,5 @@ yarn-error.*
 
 /android/
 __reports__/
+
+release.keystore*
