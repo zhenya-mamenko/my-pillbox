@@ -49,8 +49,8 @@ jobs:
             --ks-key-alias ${{ secrets.KEY_ALIAS }} \
             --ks-pass pass:${{ secrets.KEYSTORE_PASSWORD }} \
             --key-pass pass:${{ secrets.KEYSTORE_PASSWORD }} \
-            --out ../my-travel-pillbox.apk \
-            app/build/outputs/apk/release/app-release.apk
+            --out my-travel-pillbox.apk \
+            android/app/build/outputs/apk/release/app-release-unsigned.apk
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
